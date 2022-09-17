@@ -7,15 +7,27 @@ import { PrismaClient } from '@prisma/client';
 import { Game, Ad, Prisma } from '@prisma/client/index';
 import { convertHourStringToMinutes } from './utils/convert-hour-string-to-minutes';
 import { convertMinutesToHours } from '../src/utils/convert-minutes-to-hours-string';
+import cors from 'cors';
 
 const app = express();
 app.use( express.json());// CONFIGURANDO EXPRESS PARA RECEBER REQUISICOES COM O BODY DO TIPO 'JSON'
+app.use( cors() ); //COM ESSA CONFIGURAÇÃO ESTA API FICA LIBERADA PARA QUALQUER FRONTEND
+
+// FILTRANDO O DOMÍNIO PERMITIDO PARA FAZER REQUISIÇÕES PARA ESSA API:
+/*
+app.use( cors({
+    origin: 'http://rocketseat.com.br'
+}));
+
+*/
 
 
 const prisma = new PrismaClient({ // objeto intermidiario que faz a ponte entre o database e o codigo
     log: ['query']
 });
 // O OJETO PASSADO COMO PARAMETRO PARA O CONSTRUTOR DE 'PrismaClient' É OPCIONAL!
+// A PROPRIEDADE 'LOG' COM O VALOR 'QUERY' POSSIBILITA A VISUALIZAÇÃO DAS QUERIES EFETUADAS PELO PRISMA SOBRE O DATABASE 
+
 
 type RequestBody = {
         id: string;
