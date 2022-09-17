@@ -6,8 +6,21 @@ import express from 'express';
 
 const app = express();
 
-app.get('/ads', (request : any, response:any )=>{
-    
+// BUSCAR ANUNCIOS DE UM UNICO GAME
+app.get('/games', (request, response)=>{
+
+    return response.json([]);
+})
+
+// BUSCAR VARIOS ANUNCIOS
+app.post('/ads', (request, response)=>{
+    return response.status(201).json([]);
+})
+
+// BUSCAR ANUNCIOS DE UM UNICO GAME
+app.get('/games/:id/ads', (request : any, response:any )=>{
+    const gameId = request.params.id;
+
     console.log("Acessou /Ads"); //imprime no servidor
     //  return response.send("Acessou /Ads!!"); // imprime no browser
     
@@ -22,6 +35,14 @@ app.get('/ads', (request : any, response:any )=>{
     ]);
 
 });
+
+
+app.get('/ads/:id/discord', (request : any, response:any )=>{
+    const adId = request.params.id;
+});
+
+
+
 
 app.listen(3333); // NAO DEIXA A APLICACAO PARAR
 
