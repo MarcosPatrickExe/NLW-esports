@@ -2,51 +2,110 @@
 //const express = require('express');
 
 //liberou suporta ao ECMA script modules
-import express from 'express';
+import express, {Request, Response} from 'express';
+import { PrismaClient } from '@prisma/client'; 
+import { Game } from '@prisma/client/index';
 
 const app = express();
 
-// BUSCAR ANUNCIOS DE UM UNICO GAME
-app.get('/games', (request, response)=>{
+const prisma = new PrismaClient({ // objeto intermidiario que faz a ponte entre o database e o codigo
+    log: ['query']
+});
+// O OJETO PASSADO COMO PARAMETRO PARA O CONSTRUTOR DE 'PrismaClient' É OPCIONAL!
 
-    return response.json([]);
-})
+
+
+//============================================
+
+
+
+// BUSCAR ANUNCIOS DE UM UNICO GAME
+app.get('/games', 
+        async (req : Request, res : Response)=>{
+
+                const games :Game[] = await prisma.game.findMany();
+                
+                return res.json( games );
+        }
+);
+
+
+
+
+//============================================
 
 // BUSCAR VARIOS ANUNCIOS
-app.post('/ads', (request, response)=>{
-    return response.status(201).json([]);
-})
+app.post('/ads', 
+        (req : Request, res : Response)=>{
+   
+             return res.status(201).json([]);
+        }
+);
 
+
+
+//============================================
 // BUSCAR ANUNCIOS DE UM UNICO GAME
-app.get('/games/:id/ads', (request : any, response:any )=>{
-    const gameId = request.params.id;
 
-    console.log("Acessou /Ads"); //imprime no servidor
-    //  return response.send("Acessou /Ads!!"); // imprime no browser
-    
-    return response.json([
-            {id: 1, name: 'Anuncio 1'},
-            {id: 2, name: 'Anuncio 2'},
-            {id: 3, name: 'Anuncio 3'},
-            {id: 1, name: 'Anuncio 4'},
-            {id: 2, name: 'Anuncio 5'},
-            {id: 3, name: 'Anuncio 6'},
-            {id: 3, name: 'Anuncio 7'}
-    ]);
 
+app.get('/games/:id/ads',   
+    (req : Request, res : Response )=>{
+            const gameId = req.params.id;
+
+            console.log("Acessou /Ads"); //imprime no servidor
+            //  return response.send("Acessou /Ads!!"); // imprime no browser
+            
+            return res.json([
+                    {id: 1, name: 'Anuncio 1'},
+                    {id: 2, name: 'Anuncio 2'},
+                    {id: 3, name: 'Anuncio 3'},
+                    {id: 1, name: 'Anuncio 4'},
+                    {id: 2, name: 'Anuncio 5'},
+                    {id: 3, name: 'Anuncio 6'},
+                    {id: 3, name: 'Anuncio 7'}
+            ]);
+    }
+);
+
+
+
+//============================================
+
+app.get('/ads/:id/discord', (req : Request, res : Response )=>{
+    const adId = req.params.id;
 });
 
 
-app.get('/ads/:id/discord', (request : any, response:any )=>{
-    const adId = request.params.id;
-});
-
-
-
+//============================================
 
 app.listen(3333); // NAO DEIXA A APLICACAO PARAR
 
 console.log("Server is running on port 'localhost:3333/ads'....");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // HOPPSCOTCH 
@@ -59,5 +118,3 @@ console.log("Server is running on port 'localhost:3333/ads'....");
 
 // LINK DA AULA:
 // https://app.rocketseat.com.br/event/nlw-09/ignite/aula-1
-
-

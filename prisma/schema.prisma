@@ -6,6 +6,29 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite" 
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+// TABELAS PARA SEREM CRIADAS NO DATABASE:
+model Game {
+  id        String @id @default(uuid())
+  title     String
+  bannerUrl String
+  ads       Ad[] //varios anuncios
+}
+
+model Ad {
+  id              String   @id @default(uuid())
+  name            String
+  yearsPlaying    Int
+  discord         String
+  weekDays        String
+  hourDays        Int
+  hourEnd         Int
+  useVoiceChannel Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
 }
